@@ -1,10 +1,11 @@
 :root {
   color-scheme: dark;
-  --bg: #2b1000;
-  --panel: #4d1f00;
-  --line: #8a3d00;
-  --ink: #fff0e0;
-  --sub: #ffb870;
+  --bg: #05010f;
+  --panel: #1a0a3a;
+  --line: #5a2ea8;
+  --ink: #f4eaff;
+  --sub: #9fe8ff;
+  --rainbow: linear-gradient(90deg, #ff3b3b, #ff9f1c, #ffe94a, #3ddc6a, #2fc4ff, #6a5cff, #d24dff, #ff3b3b);
 }
 
 * {
@@ -15,7 +16,7 @@ html,
 body {
   margin: 0;
   height: 100%;
-  background: var(--bg);
+  background: radial-gradient(ellipse at 50% 40%, #1b0b45 0%, #0a0322 55%, var(--bg) 100%);
   color: var(--ink);
   font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
   overflow: hidden;
@@ -41,6 +42,17 @@ body {
   border: 1px solid var(--line);
   border-bottom: 0;
   border-radius: 10px 10px 0 0;
+  position: relative;
+}
+
+.bar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--rainbow);
 }
 
 .bar button {
@@ -56,13 +68,13 @@ body {
 }
 
 .bar button:hover {
-  background: #6e2c00;
+  background: #3a1a78;
   border-color: var(--line);
 }
 
 .bar button:focus-visible,
 #overlay:focus-visible {
-  outline: 2px solid #ff7a00;
+  outline: 2px solid #ffe94a;
   outline-offset: 2px;
 }
 
@@ -78,10 +90,11 @@ body {
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
-  background: #fff;
+  background: #0a0322;
   border: 1px solid var(--line);
   border-radius: 0 0 10px 10px;
   overflow: hidden;
+  box-shadow: 0 0 28px rgba(160, 90, 255, 0.45), 0 0 60px rgba(60, 200, 255, 0.2);
 }
 
 #stage {
@@ -102,7 +115,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background: rgba(90, 30, 0, 0.5);
+  background: rgba(10, 3, 34, 0.55);
   border: 0;
   color: #fff;
   font: inherit;
@@ -129,7 +142,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 10px 12px;
-  background: rgba(43, 16, 0, 0.92);
+  background: rgba(14, 5, 38, 0.93);
   border: 1px solid var(--line);
   border-radius: 10px;
   color: var(--ink);
@@ -170,7 +183,7 @@ body {
 }
 
 #history li.best {
-  color: #ff7a00;
+  color: #ffe94a;
   font-weight: bold;
 }
 

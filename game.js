@@ -78,13 +78,12 @@
   bgm.preload = 'auto';
   dead.preload = 'auto';
 
-  const COLOR_LINE = 0xffff8000;
-  const COLOR_FILL = 0xffffa000;
-  const COLOR_FILL_PAD = 0xffff7a00;
-  const COLOR_LINE_PAD = 0xffa86000;
-  const COLOR_RED = 0xff000000;
-  const COLOR_GRAY = 0xff000000;
-  const COLOR_ORANGE = 0xff000000;
+  const COLOR_LINE = 0xffffffff;
+  const COLOR_FILL_PAD = 0xffffffff;
+  const COLOR_LINE_PAD = 0xffff2a9d;
+  const COLOR_RED = 0xffffe94a;
+  const COLOR_GRAY = 0xffffffff;
+  const COLOR_ORANGE = 0xffffd23f;
 
   const v = {};
   const mouse = { x: 0, down: false };
@@ -209,8 +208,8 @@
       ctx.drawImage(backdrop, 0, 0, W, H);
     } else {
       const g = ctx.createLinearGradient(0, 0, 0, H);
-      g.addColorStop(0, '#febc62');
-      g.addColorStop(1, '#ffffff');
+      g.addColorStop(0, '#05010f');
+      g.addColorStop(1, '#2a0a4a');
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, W, H);
     }
@@ -257,9 +256,14 @@
     return TILES.charCodeAt(index - 1) - 48;
   }
 
-  function drawQuad(x1, y1, x2, y2, x3, x4, pattern) {
+  function rainbowColor(col, row) {
+    const rgb = hsvToRgb(mod(row * 22 + col * 40 - v.frames * 3, 360), 0.85, 1);
+    return (0xff << 24) | (rgb.r << 16) | (rgb.g << 8) | rgb.b;
+  }
+
+  function drawQuad(x1, y1, x2, y2, x3, x4, pattern, fillColor) {
     if (pattern !== 1 && pattern !== 2) return;
-    setPenColorToColor(pattern === 1 ? COLOR_FILL : COLOR_FILL_PAD);
+    setPenColorToColor(pattern === 1 ? fillColor : COLOR_FILL_PAD);
     for (let i = 0; i < 9; i++) {
       const t = i / 8;
       goTo(x2 + (x1 - x2) * t, y2 + (y1 - y2) * t);
@@ -292,7 +296,8 @@
       bottom + v.sway,
       bottomMid + ((360 - bottom) * v.width) / 2,
       topMid + ((360 - top) * v.width) / 2,
-      tile
+      tile,
+      rainbowColor(col, row)
     );
   }
 
@@ -321,9 +326,9 @@
   function drawBall() {
     updateBallX();
     goTo(v.x, -100 + v.sway + (192 - 3 * ((v.jump - 8) * (v.jump - 8))));
-    setPenShade(50);
+    setPenShade(22);
     setPenSize(90);
-    setPenHue(10);
+    setPenHue(0);
     penDown();
     penUp();
     for (let i = 0; i < 45; i++) {
@@ -338,9 +343,9 @@
 
   function drawFallBall() {
     goTo(v.x, -100 - v.fall);
-    setPenShade(30);
+    setPenShade(22);
     setPenSize(90 - v.fall);
-    setPenHue(10);
+    setPenHue(0);
     penDown();
     penUp();
   }
@@ -600,8 +605,8 @@
 
   function setKey(e, state) {
     let hit = true;
-    if (e.code === 'ArrowLeft') keys.left = state;
-    else if (e.code === 'ArrowRight') keys.right = state;
+    if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = state;
+    else if (e.code === 'ArrowRight' || e.code === 'KeyD') keys.right = state;
     else if (e.code === 'Space') keys.space = state;
     else hit = false;
     if (hit && gen) e.preventDefault();
